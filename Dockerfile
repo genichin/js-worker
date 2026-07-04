@@ -33,8 +33,11 @@ RUN mkdir -p "${NVM_DIR}" \
     && ln -sf "${NVM_DIR}/versions/node/$(nvm version "${NODE_VERSION}")/bin/corepack" /usr/local/bin/corepack \
     && printf '%s\n' \
         'export NVM_DIR=/usr/local/nvm' \
+        'export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"' \
         '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' \
         > /etc/profile.d/nvm.sh
+
+ENV PATH=${USER_HOME}/.npm-global/bin:${USER_HOME}/.local/bin:${PATH}
 
 RUN mkdir -p /run/sshd \
     && if id "${USERNAME}" >/dev/null 2>&1; then \
