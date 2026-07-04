@@ -48,6 +48,7 @@ RUN apt-get update \
         python3-venv \
         ripgrep \
         sudo \
+        tmux \
         uuid-dev \
         xz-utils \
         zlib1g-dev \
