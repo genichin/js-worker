@@ -10,11 +10,31 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         openssh-server \
         ca-certificates \
+        curl \
         python3 \
         python3-pip \
         python3-venv \
         sudo \
+        xz-utils \
     && rm -rf /var/lib/apt/lists/*
+
+ENV NVM_DIR=/usr/local/nvm
+ENV NODE_VERSION=24
+
+RUN mkdir -p "${NVM_DIR}" \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
+    && . "${NVM_DIR}/nvm.sh" \
+    && nvm install "${NODE_VERSION}" \
+    && nvm alias default "${NODE_VERSION}" \
+    && nvm use default \
+    && ln -sf "${NVM_DIR}/versions/node/$(nvm version "${NODE_VERSION}")/bin/node" /usr/local/bin/node \
+    && ln -sf "${NVM_DIR}/versions/node/$(nvm version "${NODE_VERSION}")/bin/npm" /usr/local/bin/npm \
+    && ln -sf "${NVM_DIR}/versions/node/$(nvm version "${NODE_VERSION}")/bin/npx" /usr/local/bin/npx \
+    && ln -sf "${NVM_DIR}/versions/node/$(nvm version "${NODE_VERSION}")/bin/corepack" /usr/local/bin/corepack \
+    && printf '%s\n' \
+        'export NVM_DIR=/usr/local/nvm' \
+        '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' \
+        > /etc/profile.d/nvm.sh
 
 RUN mkdir -p /run/sshd \
     && if id "${USERNAME}" >/dev/null 2>&1; then \
