@@ -12,6 +12,7 @@ RUN apt-get update \
         build-essential \
         openssh-server \
         ca-certificates \
+        cron \
         curl \
         ffmpeg \
         fonts-liberation \

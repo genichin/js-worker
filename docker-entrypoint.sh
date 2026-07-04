@@ -40,6 +40,9 @@ if [ -S /var/run/docker.sock ]; then
     fi
 fi
 
+mkdir -p /run/cron
+cron
+
 chown -R "${USER_NAME}:${USER_NAME}" "${USER_HOME}" 2>/dev/null || true
 
 exec "$@"
