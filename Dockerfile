@@ -48,6 +48,7 @@ RUN apt-get update \
         python3-venv \
         ripgrep \
         sudo \
+        supervisor \
         tmux \
         uuid-dev \
         xz-utils \
@@ -139,6 +140,7 @@ RUN mkdir -p /opt/ubuntu-home-defaults \
     && chown -R root:root /opt/ubuntu-home-defaults
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY supervisord.conf /etc/supervisor/conf.d/js-worker.conf
 RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 22
@@ -148,4 +150,4 @@ VOLUME ["/home/ubuntu"]
 WORKDIR /home/ubuntu
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["/usr/sbin/sshd", "-D", "-e"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/js-worker.conf"]
