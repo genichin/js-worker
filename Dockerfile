@@ -1,6 +1,7 @@
 FROM ubuntu:26.04
 
 ARG USERNAME=ubuntu
+ARG PYTHON_311_VERSION=3.11.15
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV USERNAME=${USERNAME}
@@ -14,15 +15,37 @@ RUN apt-get update \
         curl \
         ffmpeg \
         git \
+        libbz2-dev \
         libffi-dev \
+        libgdbm-dev \
+        liblzma-dev \
+        libncursesw5-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        libssl-dev \
         python3 \
         python3-dev \
         python3-pip \
         python3-venv \
         ripgrep \
         sudo \
+        uuid-dev \
         xz-utils \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON_311_VERSION}/Python-${PYTHON_311_VERSION}.tar.xz" -o /tmp/Python-${PYTHON_311_VERSION}.tar.xz \
+    && mkdir -p /tmp/python-build /opt/python/3.11 \
+    && tar -xf /tmp/Python-${PYTHON_311_VERSION}.tar.xz -C /tmp/python-build --strip-components=1 \
+    && cd /tmp/python-build \
+    && ./configure \
+        --prefix=/opt/python/3.11 \
+        --with-ensurepip=install \
+    && make -j"$(nproc)" \
+    && make altinstall \
+    && ln -sf /opt/python/3.11/bin/python3.11 /usr/local/bin/python3.11 \
+    && ln -sf /opt/python/3.11/bin/pip3.11 /usr/local/bin/pip3.11 \
+    && rm -rf /tmp/python-build /tmp/Python-${PYTHON_311_VERSION}.tar.xz
 
 ENV NVM_DIR=/usr/local/nvm
 ENV NODE_VERSION=24
