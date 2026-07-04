@@ -25,6 +25,21 @@ if [ -f "${USER_HOME}/.ssh/authorized_keys" ]; then
     chmod 600 "${USER_HOME}/.ssh/authorized_keys"
 fi
 
+if [ -S /var/run/docker.sock ]; then
+    DOCKER_GID="$(stat -c '%g' /var/run/docker.sock)"
+    DOCKER_GROUP="$(getent group "${DOCKER_GID}" | cut -d: -f1 || true)"
+
+    if [ -z "${DOCKER_GROUP}" ]; then
+        DOCKER_GROUP="docker-host-${DOCKER_GID}"
+        groupadd -g "${DOCKER_GID}" "${DOCKER_GROUP}" 2>/dev/null || true
+        DOCKER_GROUP="$(getent group "${DOCKER_GID}" | cut -d: -f1 || true)"
+    fi
+
+    if [ -n "${DOCKER_GROUP}" ]; then
+        usermod -aG "${DOCKER_GROUP}" "${USER_NAME}" 2>/dev/null || true
+    fi
+fi
+
 chown -R "${USER_NAME}:${USER_NAME}" "${USER_HOME}" 2>/dev/null || true
 
 exec "$@"
