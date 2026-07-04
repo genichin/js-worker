@@ -11,10 +11,12 @@ RUN apt-get update \
         openssh-server \
         ca-certificates \
         curl \
+        ffmpeg \
         git \
         python3 \
         python3-pip \
         python3-venv \
+        ripgrep \
         sudo \
         xz-utils \
     && rm -rf /var/lib/apt/lists/*
