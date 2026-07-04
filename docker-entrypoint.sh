@@ -11,7 +11,7 @@ if [ -d "${DEFAULTS_DIR}" ] && ! find "${USER_HOME}" -mindepth 1 -maxdepth 1 | r
     cp -a "${DEFAULTS_DIR}/." "${USER_HOME}/"
 fi
 
-mkdir -p "${USER_HOME}/.npm-global" "${USER_HOME}/.local/bin"
+mkdir -p "${USER_HOME}/.npm-global" "${USER_HOME}/.local/bin" "${USER_HOME}/supervisor.d"
 
 if [ ! -f "${USER_HOME}/.npmrc" ]; then
     printf '%s\n' "prefix=${USER_HOME}/.npm-global" > "${USER_HOME}/.npmrc"
