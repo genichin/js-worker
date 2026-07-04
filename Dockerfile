@@ -14,15 +14,33 @@ RUN apt-get update \
         ca-certificates \
         curl \
         ffmpeg \
+        fonts-liberation \
+        fonts-noto-color-emoji \
+        fonts-unifont \
         git \
         libbz2-dev \
+        libatk-bridge2.0-0t64 \
+        libatk1.0-0t64 \
+        libatspi2.0-0t64 \
+        libcairo-gobject2 \
+        libcups2t64 \
         libffi-dev \
         libgdbm-dev \
+        libgtk-3-0t64 \
         liblzma-dev \
         libncursesw5-dev \
+        libnspr4 \
+        libnss3 \
         libreadline-dev \
         libsqlite3-dev \
         libssl-dev \
+        libxcomposite1 \
+        libxcursor1 \
+        libxdamage1 \
+        libxi6 \
+        libxrandr2 \
+        libxshmfence1 \
+        libxss1 \
         python3 \
         python3-dev \
         python3-pip \
@@ -67,6 +85,11 @@ RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON_311_VERSION}/Python-$
 
 ENV NVM_DIR=/usr/local/nvm
 ENV NODE_VERSION=24
+ENV NODE_DEPS_TIMEOUT=1800
+ENV NPM_CONFIG_FETCH_RETRIES=5
+ENV NPM_CONFIG_FETCH_RETRY_MINTIMEOUT=20000
+ENV NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT=120000
+ENV PLAYWRIGHT_HOST_PLATFORM_OVERRIDE=ubuntu24.04-x64
 
 RUN mkdir -p "${NVM_DIR}" \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
@@ -81,7 +104,6 @@ RUN mkdir -p "${NVM_DIR}" \
     && printf '%s\n' \
         'export NVM_DIR=/usr/local/nvm' \
         'export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"' \
-        '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' \
         > /etc/profile.d/nvm.sh
 
 ENV PATH=${USER_HOME}/.npm-global/bin:${USER_HOME}/.local/bin:${PATH}
