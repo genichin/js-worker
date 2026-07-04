@@ -8,12 +8,15 @@ ENV USER_HOME=/home/${USERNAME}
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        build-essential \
         openssh-server \
         ca-certificates \
         curl \
         ffmpeg \
         git \
+        libffi-dev \
         python3 \
+        python3-dev \
         python3-pip \
         python3-venv \
         ripgrep \
